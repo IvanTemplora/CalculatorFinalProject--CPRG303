@@ -43,7 +43,7 @@ export default function App() {
         res = Number(num1) / Number(num2);
         break;
     }
-    setResult('');
+    setResult(res.toString());
     setNum1('');
     setNum2('');
     setOperator('');
