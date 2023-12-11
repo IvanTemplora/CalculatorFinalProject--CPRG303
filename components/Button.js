@@ -1,19 +1,38 @@
 import { Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import { ThemeContext } from "../context/ThemeContext";
+import { useContext } from "react";
 
-export default ({ onPress, text, size, theme }) => {
-  const buttonStyles = [styles.button];
-  const textStyles = [styles.text];
+const Button = ({ onPress, text, size, theme }) => {
 
-  if (size === "double") {
-    buttonStyles.push(styles.buttonDouble);
-  }
+  // use theme from the context
+  const { theme: currentTheme } = useContext(ThemeContext);
 
-  if (theme === "secondary") {
-    buttonStyles.push(styles.buttonSecondary);
-    textStyles.push(styles.textSecondary);
-  } else if (theme === "accent") {
-    buttonStyles.push(styles.buttonAccent);
-  }
+
+  const dynamicButtonStyles = {
+    backgroundColor: currentTheme.button,
+    borderColor: currentTheme.border,
+  };
+
+  const dynamictextStyles = {
+    color: currentTheme.text,
+  };
+
+  //combine default styles with theme-dependent styles
+  const buttonStyles = [
+    styles.button, 
+    dynamicButtonStyles,
+    size === "double" && styles.buttonDouble,
+    theme === "secondary" && styles.buttonSecondary,
+    theme === "accent" && styles.buttonAccent,
+  ];
+
+  const textStyles = [
+    styles.text,
+    dynamictextStyles,  
+    theme === "secondary" && styles.textSecondary,
+  ];
+
 
   return (
     <TouchableOpacity onPress={onPress} style={buttonStyles}>
@@ -28,23 +47,18 @@ const buttonWidth = screen.width / 4;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#4C5466",
     flex: 1,
     height: Math.floor(buttonWidth - 10),
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 35,
     borderWidth: 4,
-    borderColor: "#7B8294",
     margin: 5,
   },
   text: {
-    color: "#fff",
     fontSize: 24,
   },
-  textSecondary: {
-    color: "#060606",
-  },
+
   buttonDouble: {
     width: screen.width / 2 - 10,
     flex: 0,
@@ -55,6 +69,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#a6a6a6",
   },
   buttonAccent: {
-    backgroundColor: "#C04C01",
+    backgroundColor: "#f09a36",
+  },
+  textSecondary: {
+    color: "#060606",
   },
 });
+
+export default Button;

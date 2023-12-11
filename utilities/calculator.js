@@ -19,6 +19,11 @@ export const initialState = {
   // handle equal function 
   const handleEqual = (state) => {
     const { currentValue, previousValue, operator } = state;
+
+    if (operator === null || previousValue === null) {
+      //if there's no operation to perform, return the current state
+      return state;
+    }
   
     const current = parseFloat(currentValue);
     const previous = parseFloat(previousValue);
@@ -56,17 +61,23 @@ export const initialState = {
   // calculator function 
   // type: number, clear, posneg, percentage, operator, equal
   const calculator = (type, value, state) => {
+
     switch (type) {
       case "number":
-        return handleNumber(value, state);
+        return { 
+          ...state,
+          ...handleNumber(value, state)
+        };
       case "clear":
         return initialState;
       case "posneg":// positive negative
         return {
+          ...state,
           currentValue: `${parseFloat(state.currentValue) * -1}`,
         };
       case "percentage":
         return {
+          ...state, 
           currentValue: `${parseFloat(state.currentValue) * 0.01}`,
         };
       case "operator":
