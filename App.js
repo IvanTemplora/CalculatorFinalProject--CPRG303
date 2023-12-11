@@ -31,7 +31,7 @@ const App = () => {
               value={isThemeDark}
             />
           </View>
-          <Text style={[styles.value, { color: theme.textColor}]}>
+          <Text style={[styles.value, { color: "black"}]}>
             {parseFloat(state.currentValue).toLocaleString()}
           </Text>
 
